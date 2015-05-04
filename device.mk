@@ -19,6 +19,9 @@
 #
 # Everything in this directory will become public
 
+PRODUCT_COPY_FILES += \
+    device/asus/flo/twrp.fstab:recovery/root/etc/twrp.fstab
+
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.carrier=wifi-only
 
