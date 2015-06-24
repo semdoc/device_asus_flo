@@ -27,6 +27,21 @@
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
+# TWRP lollipop decrypt proprietaries
+
+$(shell mkdir -p out/target/product/flo/recovery/root/vendor/firmware/keymaster)
+$(shell mkdir -p out/target/product/flo/recovery/root/vendor/lib/hw)
+
+PRODUCT_COPY_FILES += \
+    device/asus/flo/recovery/keymaster.b00:recovery/root/vendor/firmware/keymaster/keymaster.b00 \
+    device/asus/flo/recovery/keymaster.b01:recovery/root/vendor/firmware/keymaster/keymaster.b01 \
+    device/asus/flo/recovery/keymaster.b02:recovery/root/vendor/firmware/keymaster/keymaster.b02 \
+    device/asus/flo/recovery/keymaster.b03:recovery/root/vendor/firmware/keymaster/keymaster.b03 \
+    device/asus/flo/recovery/keymaster.mdt:recovery/root/vendor/firmware/keymaster/keymaster.mdt \
+    device/asus/flo/recovery/keystore.msm8960.so:recovery/root/vendor/lib/hw/keystore.msm8960.so \
+    device/asus/flo/recovery/libQSEEComAPI.so:recovery/root/sbin/libQSEEComAPI.so
+
+
 PRODUCT_PACKAGES := \
     libwpa_client \
     hostapd \
@@ -52,7 +67,8 @@ PRODUCT_COPY_FILES += \
 	device/asus/flo/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
 	device/asus/flo/WCNSS_qcom_wlan_nv_flo.bin:system/etc/wifi/WCNSS_qcom_wlan_nv_flo.bin \
 	device/asus/flo/WCNSS_qcom_wlan_nv_deb.bin:system/etc/wifi/WCNSS_qcom_wlan_nv_deb.bin \
-	device/asus/flo/init.flo.wifi.sh:system/etc/init.flo.wifi.sh
+	device/asus/flo/init.flo.wifi.sh:system/etc/init.flo.wifi.sh \
+	device/asus/flo/twrp.fstab:recovery/root/etc/twrp.fstab
 
 PRODUCT_COPY_FILES += \
 	device/asus/flo/audio_policy.conf:system/etc/audio_policy.conf
