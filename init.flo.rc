@@ -38,10 +38,8 @@ on init
     export SECONDARY_STORAGE /storage/usbdisk
 
     # Support legacy paths
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 
     # Set permissions for persist partition
     mkdir /persist 0771 system system
@@ -50,7 +48,6 @@ on init
 on fs
     mount_all ./fstab.flo
     restorecon_recursive /persist
-    setprop ro.crypto.fuse_sdcard true
     write /sys/kernel/boot_adsp/boot 1
 
 on early-boot
@@ -70,9 +67,6 @@ on boot
 
     # Allow QMUX daemon to assign port open wait time
     chown radio radio /sys/devices/virtual/hsicctl/hsicctl0/modem_wait
-
-    #Remove SUID bit for iproute2 ip tool
-    chmod 0755 /system/bin/ip
 
     #port-bridge
     chmod 0660 /dev/smd0
@@ -140,12 +134,9 @@ on boot
 
 # msm specific files that need to be created on /data
 on post-fs-data
-    mkdir /data/media 0770 media_rw media_rw
-
     chown system system /dev/wcnss_wlan
     write /sys/module/wcnss_ssr_8960/parameters/enable_riva_ssr 1
 
-    mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
     mkdir /tombstones/lpass 0771 system system
     mkdir /tombstones/wcnss 0771 system system
@@ -229,6 +220,64 @@ on post-fs-data
     # adjust vibrator amplitude
     write /sys/class/timed_output/vibrator/amp 70
 
+    # Enable Power modes and set the CPU Freq Sampling rates
+    write /sys/module/rpm_resources/enable_low_power/L2_cache 1
+    write /sys/module/rpm_resources/enable_low_power/pxo 1
+    write /sys/module/rpm_resources/enable_low_power/vdd_dig 1
+    write /sys/module/rpm_resources/enable_low_power/vdd_mem 1
+    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "ondemand"
+    restorecon_recursive /sys/devices/system/cpu/cpufreq/ondemand
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
+    write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
+    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential 10
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_multi_core 60
+    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential_multi_core 3
+    write /sys/devices/system/cpu/cpufreq/ondemand/optimal_freq 918000
+    write /sys/devices/system/cpu/cpufreq/ondemand/sync_freq 1026000
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_any_cpu_load 80
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /dev/cpuctl/apps/cpu.notify_on_migrate 1
+
+on charger
+    # Enable Power modes and set the CPU Freq Sampling rates
+    write /sys/module/rpm_resources/enable_low_power/L2_cache 1
+    write /sys/module/rpm_resources/enable_low_power/pxo 1
+    write /sys/module/rpm_resources/enable_low_power/vdd_dig 1
+    write /sys/module/rpm_resources/enable_low_power/vdd_mem 1
+    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
+    write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
+
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
@@ -242,11 +291,10 @@ service rmt_storage /system/bin/rmt_storage
     user root
     group system
 
-service hciattach /system/bin/sh /system/etc/init.flo.bt.sh
+service hciattach /system/bin/init.flo.bt.sh
     class late_start
     user bluetooth
     group qcom_oncrpc bluetooth net_bt_admin system net_bt_stack
-    seclabel u:r:bluetooth_loader:s0
     disabled
     oneshot
 
@@ -261,11 +309,6 @@ service bridgemgrd /system/bin/bridgemgrd
     user radio
     group radio
 
-service qcom-c_main-sh /system/bin/sh /init.qcom.class_main.sh
-    class main
-    user root
-    oneshot
-
 # QMUX must be in multiple groups to support external process connections
 service qmuxd /system/bin/qmuxd
     class main
@@ -273,9 +316,8 @@ service qmuxd /system/bin/qmuxd
     group radio audio bluetooth gps net_bt_stack
     disabled
 
-service ks_checker /system/bin/sh /system/etc/kickstart_checker.sh
+service ks_checker /system/bin/kickstart_checker.sh
     class core
-    seclabel u:r:kickstart:s0
     oneshot
 
 service kickstart /system/bin/qcks -i /firmware/image/ -r /data/tombstones/mdm/
@@ -284,10 +326,6 @@ service kickstart /system/bin/qcks -i /firmware/image/ -r /data/tombstones/mdm/
     group system
     disabled
     oneshot
-
-service asus-dbug-d /data/data/com.asus.debugger/files/asus-debugger-d
-    class late_start
-    disabled
 
 on property:gsm.radio.kickstart=on
     start kickstart
@@ -420,11 +458,10 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     user camera
     group camera system inet input
 
-service wcnss_init /system/bin/sh /system/etc/init.flo.wifi.sh
+service wcnss_init /system/bin/init.flo.wifi.sh
     class late_start
     user system
     group system wifi
-    seclabel u:r:conn_init:s0
     oneshot
 
 service bdAddrLoader /system/bin/bdAddrLoader -f /persist/bluetooth/.bdaddr -h -x
