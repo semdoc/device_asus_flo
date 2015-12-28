@@ -25,7 +25,7 @@ TARGET_NO_BOOTLOADER := true
 BOARD_KERNEL_BASE := 0x80200000
 BOARD_KERNEL_PAGESIZE := 2048
 # BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=msm8960 maxcpus=2
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=flo user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.selinux=permissive crap=_that
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=flo user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += vmalloc=340M
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000
 
@@ -133,20 +133,19 @@ BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS += hardware/cyanogen
 
 #TWRP config:
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+DEVICE_RESOLUTION := 1200x1920
 TW_THEME := portrait_hdpi
+TW_INCLUDE_CRYPTO := true
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_NO_USB_STORAGE := true
-TW_INCLUDE_L_CRYPTO := true
-#TW_INTERNAL_STORAGE_PATH := "/data/media"
-#TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-#TW_EXTERNAL_STORAGE_PATH := "/usb-otg"
-#TW_EXTERNAL_STORAGE_MOUNT_POINT := "usb-otg"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "usb-otg"
+TW_EXTERNAL_STORAGE_PATH := "/usb-otg"
 TW_CUSTOM_POWER_BUTTON := 107
 TW_BRIGHTNESS_PATH := /sys/devices/platform/msm_fb.591617/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
 TW_NO_SCREEN_BLANK := true
-RECOVERY_GRAPHICS_USE_LINELENGTH := true
-TW_EXCLUDE_SUPERSU := true
 
 -include vendor/asus/flo/BoardConfigVendor.mk
