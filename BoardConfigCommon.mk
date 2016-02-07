@@ -134,13 +134,11 @@ BOARD_HARDWARE_CLASS += hardware/cyanogen
 
 #TWRP config:
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-TW_INCLUDE_CRYPTO := true
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
-TW_NO_USB_STORAGE := true
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "usb-otg"
-TW_EXTERNAL_STORAGE_PATH := "/usb-otg"
-TW_INCLUDE_FB2PNG := true
 TW_CUSTOM_POWER_BUTTON := 107
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_FB2PNG := true
+TW_NO_USB_STORAGE := true
 
 -include vendor/asus/flo/BoardConfigVendor.mk
