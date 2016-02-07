@@ -2,10 +2,10 @@
 
 # device                                           mount_point    fstype  mount_flags                             fs_flags    twrp_flags
 /dev/block/platform/msm_sdcc.1/by-name/boot        /boot          emmc    defaults                                defaults
-/dev/block/platform/msm_sdcc.1/by-name/recovery    /recovery      emmc    defaults                                defaults    backup=1
+/dev/block/platform/msm_sdcc.1/by-name/recovery    /recovery      emmc    defaults                                defaults    twrp=backup=1
 /dev/block/platform/msm_sdcc.1/by-name/misc        /misc          emmc    defaults                                defaults
 /dev/block/platform/msm_sdcc.1/by-name/system      /system        ext4    defaults                                defaults
-/dev/block/platform/msm_sdcc.1/by-name/userdata    /data          ext4    noatime,nosuid,nodev,noauto_da_alloc    defaults    encryptable=/dev/block/platform/msm_sdcc.1/by-name/metadata
+/dev/block/platform/msm_sdcc.1/by-name/userdata    /data          ext4    noatime,nosuid,nodev,noauto_da_alloc    defaults    twrp=encryptable=/dev/block/platform/msm_sdcc.1/by-name/metadata
 /dev/block/platform/msm_sdcc.1/by-name/cache       /cache         ext4    noatime,nosuid,nodev,noauto_da_alloc    defaults
 /dev/block/platform/msm_sdcc.1/by-name/sbl1        /sbl1          emmc    defaults                                defaults
 /dev/block/platform/msm_sdcc.1/by-name/sbl2        /sbl2          emmc    defaults                                defaults
