@@ -140,6 +140,7 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_NO_USB_STORAGE := true
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "usb-otg"
 TW_EXTERNAL_STORAGE_PATH := "/usb-otg"
+TW_INCLUDE_FB2PNG := true
 TW_CUSTOM_POWER_BUTTON := 107
 
 -include vendor/asus/flo/BoardConfigVendor.mk
